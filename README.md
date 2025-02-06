@@ -84,14 +84,14 @@ The React frontend will run at `http://localhost:3000`.
 
 You need to create `.env` files for both frontend and backend.
 
-1. Backend (********`backend/.env`********\*\*\*\*\*\*\*\*\*\*\*\*):
+1. Backend (`backend/.env`):
 
    ```
    OPENAI_API_KEY=your-openai-api-key
    FIREBASE_CONFIG=your-firebase-config
    ```
 
-2. Frontend (********`frontend/.env`********\*\*\*\*\*\*\*\*\*\*\*\*):
+2. Frontend (`frontend/.env`):
 
    ```
    REACT_APP_BACKEND_URL=http://localhost:5000
@@ -99,7 +99,7 @@ You need to create `.env` files for both frontend and backend.
 
 ---
 
-6. Firebase Setup**
+6. Firebase Setup
 
 If you are working on authentication or database tasks, install Firebase CLI:
 
