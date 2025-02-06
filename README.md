@@ -23,13 +23,13 @@ The Grocery Shopping Assistant is a React-based web app with a Node.js backend t
 Run this command in your terminal:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
+git clone https://github.com/sujan2003/Aislo.git
 ```
 
 Navigate into the project folder:
 
 ```bash
-cd your-repository
+cd Aislo
 ```
 
 ---
