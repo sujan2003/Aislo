@@ -11,6 +11,7 @@ The Grocery Shopping Assistant is a React-based web app with a Node.js backend t
 1. Prerequisites
 
 - **Node.js** (v16 or higher)
+   - https://nodejs.org/en/download 
 - **npm** (comes with Node.js) or **Yarn** (optional)
 - **Git**
 - **Firebase CLI** (for authentication setup, optional)
