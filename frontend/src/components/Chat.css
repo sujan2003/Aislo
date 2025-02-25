@@ -1,0 +1,100 @@
+/* Full-Screen Chat Container */
+.chat-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #A44A3F; /* Brownish background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .chat-header {
+    width: 100%;
+    height: 10%;
+    background-color: #D4E09B; /* Light green */
+    color: #fff;
+    font-family: 'Limelight', cursive;
+    font-size: 40px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  /* Fixing Position of Login Icon */
+  .chat-header .profile-icon {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #A44A3F;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #A44A3F;
+    background-color: transparent;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  /* Chat Box (Centers the Text) */
+  .chat-box {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 28px;
+    font-family: "Georgia", serif;
+    text-align: center;
+  }
+  
+  /* Centering Input Field */
+  .chat-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    bottom: 38%;
+  }
+  
+  /* Input Box */
+  .chat-input input {
+    width: 40%;
+    padding: 15px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 18px;
+    background-color: #F6F4D2; /* Light cream */
+    color: #A44A3F; /* Brownish text */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Footer */
+  .chat-footer {
+    width: 100%;
+    height: 10%;
+    background-color: #D4E09B; /* Light green */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
