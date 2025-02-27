@@ -1,17 +1,41 @@
 import express from 'express';
-import { OpenAI } from "@langchain/openai";
 import axios from 'axios';
 import dotenv from 'dotenv';
 import cors from 'cors';
+
+//Langchain libraries
+import { ChatOpenAI, OpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser} from "@langchain/core/output_parsers";
+const outputParser = new StringOutputParser();
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+
+//-----------Langchain implementation-----------//
+const chatModel = new ChatOpenAI({
+  model: "gpt-4o-mini",
+  apiKey: process.env.OPENAI_API_KEY,
 })
+
+const prompt = ChatPromptTemplate.fromMessages([
+  ["system", "You are a world class food recipe documentation writer.\n You list the reciepe for {input}(food) in bullet point format. \n After the list for the {input}(food), you write a brief note to highlight the key points of the recipe or any additional information you think is important."],
+  ["user", "{input}"],
+]);
+
+const chain = prompt.pipe(chatModel).pipe(outputParser);
+
+const response = await chain.invoke({
+  input: "How do I make chocolate cake?",
+});
+
+app.get('/', (req, res) => {
+  res.send(response);
+})
+//Add receipe API
 
 app.listen(4000, () => {
   console.log('Backend server running on http://localhost:4000');
