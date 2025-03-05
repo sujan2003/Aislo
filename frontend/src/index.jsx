@@ -5,6 +5,8 @@ import './index.css';
 import App from './App';
 import Chat from './components/Chat';
 import Login from './components/Login';
+import Signup from './components/Signup';
+import Questions from './components/Questions';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +16,8 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/questions" element={<Questions />} />
       </Routes>
     </Router>
   </React.StrictMode>
