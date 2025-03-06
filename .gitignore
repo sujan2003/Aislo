@@ -33,3 +33,5 @@ coverage/
 
 # VSCode-specific files
 .vscode/
+
+ChatTest.jsx
