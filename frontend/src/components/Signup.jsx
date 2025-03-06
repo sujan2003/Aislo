@@ -19,13 +19,20 @@ const Login = () => {
 
       {/* Login Form */}
       <div className="login-box">
-        <h2>Personal Preferences</h2>
+        <h2>Create New Account</h2>
         <br></br>
-        <h3>Question</h3>
-        <input type="text" placeholder="Answer" /> 
-        <button className="signup-btn" onClick={() => navigate("/chat")}>
-            Done
+        <h3>Name</h3>
+        <input type="text" placeholder="Enter your name" /> 
+        <h3>Email</h3>
+        <input type="email" placeholder="Enter your email" /> 
+        <h3>Password</h3>
+        <input type="password" placeholder="Enter your password" /> 
+        <button className="signup-btn" onClick={() => navigate("/questions")}>
+            Sign Up
         </button>
+        <h3>
+            Already a user? <Link to="/Login">Click here to login</Link>
+        </h3>
       </div>
 
       {/* Footer */}

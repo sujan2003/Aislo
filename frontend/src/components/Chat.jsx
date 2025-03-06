@@ -1,6 +1,7 @@
 // https://www.dhiwise.com/post/how-to-build-a-real-time-react-chat-application
 
 import {useNavigate} from "react-router-dom"; // Import useNavigate hook
+import { Link } from "react-router-dom";
 import React, { useState } from "react"; // Import React and useState hook
 import "./Chat.css"; // Import CSS file for styling
 
@@ -23,10 +24,10 @@ const Chat = () => {
     <div className="chat-container">
       {/* Header Section */}
       <div className="chat-header">
-        <div className="logo">Aislo</div> {/* Displaying the chat logo */}
-        <button className="profile-icon" onClick={() => navigate("/login")}>
-          <span className="material-symbols-outlined">account_circle</span>
-        </button>
+      <Link to="/chat" className="logo">Aislo</Link> {/* Displaying the chat logo */}
+      <Link to="/signup" className="profile-icon">
+        <span className="material-symbols-outlined">account_circle</span>
+      </Link> {/* Displaying the chat logo */}
       </div>
 
       {/* Chat Box */}
