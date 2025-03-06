@@ -29,13 +29,16 @@ const prompt = ChatPromptTemplate.fromMessages([
 const chain = prompt.pipe(chatModel).pipe(outputParser);
 
 const response = await chain.invoke({
-  input: "How do I make chocolate cake?",
+  input: "Best Chocolate Chip Cookies",
 });
 
 app.get('/', (req, res) => {
+  res.send('Welcome to the Aislo chatbot backend server!');
+})
+
+app.get('/response', (req, res) => {
   res.send(response);
 })
-//Add receipe API
 
 app.listen(4000, () => {
   console.log('Backend server running on http://localhost:4000');
