@@ -4,21 +4,28 @@ import {useNavigate} from "react-router-dom"; // Import useNavigate hook
 import { Link } from "react-router-dom";
 import React, { useState } from "react"; // Import React and useState hook
 import "./Chat.css"; // Import CSS file for styling
+import axios from "axios";
 
 const Chat = () => {
-  // State variables to store messages and input text
-  const [messages, setMessages] = useState([]);
+  const [output, setOutput] = useState([]);
   const [input, setInput] = useState("");
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  
+  const updateInput = (event) => {
+    setInput(event.target.value); // Update input state on text change
+  }
 
-  // Function to handle sending messages
-  const sendMessage = () => {
-    if (input.trim()) { // Check if input is not just empty spaces
-      // Add the new message to the messages array
-      setMessages([...messages, { text: input, sender: "You" }]);
-      setInput(""); // Clear the input field after sending the message
+  const handleSubmit = async () => {
+    try {
+      await axios.post("http://localhost:4000/api/data", { input: input })
+      .then(response => {
+        setOutput(response.data.message)
+      })
     }
-  };
+    catch (error) {
+      setError("Error fetching data from the server");
+    }
+  }
 
   return (
     <div className="chat-container">
@@ -40,9 +47,15 @@ const Chat = () => {
         <input
           type="text"
           value={input} // Bind input field to state
-          onChange={(e) => setInput(e.target.value)} // Update input state on text change
+          onChange={updateInput} // Update input state on text change
           placeholder="Start typing..." // Placeholder text in the input field
         />
+        <button onClick={handleSubmit}>Send</button>
+      </div>
+
+      {/* Chat response Box */}
+      <div className="chat-box">
+        {output.length > 0 ? <p>{output}</p>: <p>{error}</p>}
       </div>
 
       {/* Footer Section */}
