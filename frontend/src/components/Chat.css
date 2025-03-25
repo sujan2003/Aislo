@@ -46,33 +46,53 @@
   
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap');
 
-/* Profile Icon Link */
-.profile-icon {
-  text-decoration: none; /* Remove default underline */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Profile Dropdown Container */
+.profile-dropdown {
+  position: absolute;
+  top: 0;
+  left: 90%;
+  padding: 20px;
+  z-index: 100;
+}
+
+/* Adjust Icon inside Dropdown */
+.profile-dropdown .material-symbols-outlined {
+  font-size: 70px;
+  color: #fff;
   cursor: pointer;
-  padding: 10px;
+  transition: color 0.3s ease;
 }
 
-/* Icon Styling */
-.profile-icon span {
-  font-family: "Material Symbols Outlined";
-    color: #fff;
-    font-size: 70px;
-    padding: 20px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 90%;
+.profile-dropdown .material-symbols-outlined:hover {
+  color: #A44A3F;
 }
 
-/* Hover Effect */
-.profile-icon:hover span {
-  color: #A44A3F; /* Change color to yellow on hover */
+/* Dropdown Menu Box */
+.dropdown-menu {
+  position: absolute;
+  top: 80px; /* Below the icon */
+  right: 20px;
+  background-color: #F6F4D2; /* Matching light cream */
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  min-width: 140px;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  padding: 12px 15px;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  font-size: 18px;
+  color: #A44A3F;
+  font-family: 'Barlow', sans-serif;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #d4e09b; /* Soft green on hover */
 }
 
   /* Chat Box (Centers the Text) */
