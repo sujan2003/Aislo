@@ -1,31 +1,37 @@
 // https://www.dhiwise.com/post/how-to-build-a-real-time-react-chat-application
 
-import {useNavigate} from "react-router-dom"; // Import useNavigate hook
 import { Link } from "react-router-dom";
-import React, { useState } from "react"; // Import React and useState hook
+import React, {useState } from "react"; // Import React and useState hook
 import "./Chat.css"; // Import CSS file for styling
 import axios from "axios";
 
 const Chat = () => {
   const [output, setOutput] = useState([]);
   const [input, setInput] = useState("");
+  const [Loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState();
   
   const updateInput = (event) => {
     setInput(event.target.value); // Update input state on text change
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setInput("");
+    setLoading(true)
     try {
       await axios.post("http://localhost:4000/api/data", { input: input })
       .then(response => {
         setOutput(response.data.message)
       })
+      setLoading(false);
     }
     catch (error) {
       setError("Error fetching data from the server");
     }
   }
+
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -53,10 +59,10 @@ const Chat = () => {
 
       {/* Chat Box */}
       <div className="chat-box">
-        <p>Grocery Shopping Assistance</p>
+        <p>Grocery Shopping Assistance</p> {/* Placeholder text for the chat */}
       </div>
 
-      {/* Input Field */}
+      {/* Input Field for typing messages */}
       <div className="chat-input">
         <input
           type="text"
@@ -73,9 +79,9 @@ const Chat = () => {
       </div>
 
       {/* Footer Section */}
-      <div className="chat-footer"></div>
+      <div className="chat-footer"></div> 
     </div>
   );
 };
 
-export default Chat;
+export default Chat; 
