@@ -1,19 +1,31 @@
-import { useNavigate, Link } from "react-router-dom";
-import React, { useState } from "react";
-import "./Chat.css";
+// https://www.dhiwise.com/post/how-to-build-a-real-time-react-chat-application
+
+import {useNavigate} from "react-router-dom"; // Import useNavigate hook
+import { Link } from "react-router-dom";
+import React, { useState } from "react"; // Import React and useState hook
+import "./Chat.css"; // Import CSS file for styling
+import axios from "axios";
 
 const Chat = () => {
-  const [messages, setMessages] = useState([]);
+  const [output, setOutput] = useState([]);
   const [input, setInput] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  
+  const updateInput = (event) => {
+    setInput(event.target.value); // Update input state on text change
+  }
 
-  const sendMessage = () => {
-    if (input.trim()) {
-      setMessages([...messages, { text: input, sender: "You" }]);
-      setInput("");
+  const handleSubmit = async () => {
+    try {
+      await axios.post("http://localhost:4000/api/data", { input: input })
+      .then(response => {
+        setOutput(response.data.message)
+      })
     }
-  };
+    catch (error) {
+      setError("Error fetching data from the server");
+    }
+  }
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -48,10 +60,16 @@ const Chat = () => {
       <div className="chat-input">
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Start typing..."
+          value={input} // Bind input field to state
+          onChange={updateInput} // Update input state on text change
+          placeholder="Start typing..." // Placeholder text in the input field
         />
+        <button onClick={handleSubmit}>Send</button>
+      </div>
+
+      {/* Chat response Box */}
+      <div className="chat-box">
+        {output.length > 0 ? <p>{output}</p>: <p>{error}</p>}
       </div>
 
       {/* Footer Section */}
