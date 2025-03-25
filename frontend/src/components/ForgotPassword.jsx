@@ -1,14 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Combined imports
+import { useNavigate, Link } from "react-router-dom";
 import "./Style.css";
 import "./Chat.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown toggle
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // Popup state
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleSubmit = () => {
+    setShowPopup(true); // Show the popup
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -16,8 +25,6 @@ const Login = () => {
       {/* Header */}
       <div className="chat-header">
         <Link to="/chat" className="logo">Aislo</Link>
-
-        {/* Profile Dropdown */}
         <div className="profile-dropdown">
           <span className="material-symbols-outlined" onClick={toggleDropdown}>
             account_circle
@@ -31,25 +38,25 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Login Form */}
+      {/* Form */}
       <div className="login-box">
-        <h2>Create New Account</h2>
+        <h2>Reset Password</h2>
         <br />
-        <h3>Name</h3>
-        <input type="text" placeholder="Enter your name" />
         <h3>Email</h3>
         <input type="email" placeholder="Enter your email" />
-        <h3>Password</h3>
-        <input type="password" placeholder="Enter your password" />
-        <button className="signup-btn" onClick={() => navigate("/questions")}>
-          Sign Up
-        </button>
-        <h3>
-          Already a user? <Link to="/Login">Click here to login</Link>
-        </h3>
+        <button className="signup-btn" onClick={handleSubmit}>Submit</button>
       </div>
 
-      {/* Footer */}
+      {/* Popup Modal */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <p>Reset link sent to your email!</p>
+            <button onClick={closePopup}>Close</button>
+          </div>
+        </div>
+      )}
+
       <div className="chat-footer"></div>
     </div>
   );

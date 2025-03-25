@@ -7,6 +7,7 @@ import Chat from './components/Chat';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Questions from './components/Questions';
+import ForgotPassword from './components/ForgotPassword';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/questions" element={<Questions />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
       </Routes>
     </Router>
   </React.StrictMode>

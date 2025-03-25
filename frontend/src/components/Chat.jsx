@@ -27,22 +27,36 @@ const Chat = () => {
     }
   }
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div className="chat-container">
       {/* Header Section */}
       <div className="chat-header">
-      <Link to="/chat" className="logo">Aislo</Link> {/* Displaying the chat logo */}
-      <Link to="/signup" className="profile-icon">
-        <span className="material-symbols-outlined">account_circle</span>
-      </Link> {/* Displaying the chat logo */}
+        <Link to="/chat" className="logo">Aislo</Link>
+
+        {/* Profile Dropdown */}
+        <div className="profile-dropdown">
+          <span className="material-symbols-outlined" onClick={toggleDropdown}>
+            account_circle
+          </span>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <Link to="/signup" className="dropdown-item">Sign Up</Link>
+              <Link to="/login" className="dropdown-item">Log In</Link>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Chat Box */}
       <div className="chat-box">
-        <p>Grocery Shopping Assistance</p> {/* Placeholder text for the chat */}
+        <p>Grocery Shopping Assistance</p>
       </div>
 
-      {/* Input Field for typing messages */}
+      {/* Input Field */}
       <div className="chat-input">
         <input
           type="text"
@@ -59,9 +73,9 @@ const Chat = () => {
       </div>
 
       {/* Footer Section */}
-      <div className="chat-footer"></div> 
+      <div className="chat-footer"></div>
     </div>
   );
 };
 
-export default Chat; 
+export default Chat;
