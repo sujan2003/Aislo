@@ -2,25 +2,30 @@
 
 import {useNavigate} from "react-router-dom"; // Import useNavigate hook
 import { Link } from "react-router-dom";
-import React, { useState } from "react"; // Import React and useState hook
+import React, { use, useState } from "react"; // Import React and useState hook
 import "./Chat.css"; // Import CSS file for styling
 import axios from "axios";
 
 const Chat = () => {
   const [output, setOutput] = useState([]);
   const [input, setInput] = useState("");
+  const [Loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
   const updateInput = (event) => {
     setInput(event.target.value); // Update input state on text change
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setInput("");
+    setLoading(true)
     try {
       await axios.post("http://localhost:4000/api/data", { input: input })
       .then(response => {
         setOutput(response.data.message)
       })
+      setLoading(false);
     }
     catch (error) {
       setError("Error fetching data from the server");
