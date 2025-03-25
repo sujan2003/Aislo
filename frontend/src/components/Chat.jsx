@@ -1,8 +1,7 @@
 // https://www.dhiwise.com/post/how-to-build-a-real-time-react-chat-application
 
-import {useNavigate} from "react-router-dom"; // Import useNavigate hook
 import { Link } from "react-router-dom";
-import React, { use, useState } from "react"; // Import React and useState hook
+import React, {useState } from "react"; // Import React and useState hook
 import "./Chat.css"; // Import CSS file for styling
 import axios from "axios";
 
@@ -11,6 +10,7 @@ const Chat = () => {
   const [input, setInput] = useState("");
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState();
   
   const updateInput = (event) => {
     setInput(event.target.value); // Update input state on text change
@@ -32,14 +32,29 @@ const Chat = () => {
     }
   }
 
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div className="chat-container">
       {/* Header Section */}
       <div className="chat-header">
-      <Link to="/chat" className="logo">Aislo</Link> {/* Displaying the chat logo */}
-      <Link to="/signup" className="profile-icon">
-        <span className="material-symbols-outlined">account_circle</span>
-      </Link> {/* Displaying the chat logo */}
+        <Link to="/chat" className="logo">Aislo</Link>
+
+        {/* Profile Dropdown */}
+        <div className="profile-dropdown">
+          <span className="material-symbols-outlined" onClick={toggleDropdown}>
+            account_circle
+          </span>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <Link to="/signup" className="dropdown-item">Sign Up</Link>
+              <Link to="/login" className="dropdown-item">Log In</Link>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Chat Box */}
@@ -69,4 +84,4 @@ const Chat = () => {
   );
 };
 
-export default Chat; 
+export default Chat;
