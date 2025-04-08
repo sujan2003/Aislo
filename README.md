@@ -2,7 +2,7 @@ AISLO — Project Setup Guide
 
 **Project Overview**
 
-The Grocery Shopping Assistant is a React-based web app with a Node.js backend that helps users find the best prices for groceries. It uses LangChain for API interactions and Firebase for authentication and a small database.
+The Grocery Shopping Assistant is a React-based web app with a Node.js backend that helps users find food recipes and grocery prices. It uses LangChain for API interactions, Firebase for authentication, and a small database.
 
 ---
 
