@@ -1,49 +1,44 @@
-// https://www.dhiwise.com/post/how-to-build-a-real-time-react-chat-application
-
 import { Link } from "react-router-dom";
-import React, {useState } from "react"; // Import React and useState hook
-import "./Chat.css"; // Import CSS file for styling
-import axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
+import "./Chat.css";
 
 const Chat = () => {
-  const [output, setOutput] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [Loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState();
-  
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const messagesEndRef = useRef(null);
+
   const updateInput = (event) => {
-    setInput(event.target.value); // Update input state on text change
-  }
+    setInput(event.target.value);
+  };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setInput("");
-    setLoading(true)
-    try {
-      await axios.post("http://localhost:4000/api/data", { input: input })
-      .then(response => {
-        setOutput(response.data.message)
-      })
-      setLoading(false);
-    }
-    catch (error) {
-      setError("Error fetching data from the server");
-    }
-  }
+    if (!input.trim()) return;
 
+    const userMessage = { sender: "user", text: input.trim() };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+
+    setTimeout(() => {
+      const botMessage = { sender: "bot", text: "Hi!" };
+      setMessages((prev) => [...prev, botMessage]);
+    }, 500);
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div className="chat-container">
-      {/* Header Section */}
+      {/* Header */}
       <div className="chat-header">
         <Link to="/chat" className="logo">Aislo</Link>
-
-        {/* Profile Dropdown */}
         <div className="profile-dropdown">
           <span className="material-symbols-outlined" onClick={toggleDropdown}>
             account_circle
@@ -57,30 +52,34 @@ const Chat = () => {
         </div>
       </div>
 
-      {/* Chat Box */}
-      <div className="chat-box">
-        <p>Grocery Shopping Assistance</p> {/* Placeholder text for the chat */}
+      {/* Chat Wrapper */}
+      <div className="chat-wrapper">
+        <div className="chat-box scrollable">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`message ${msg.sender === "user" ? "user-msg" : "bot-msg"}`}
+            >
+              {msg.text}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Field */}
+        <div className="chat-input">
+          <input
+            type="text"
+            value={input}
+            onChange={updateInput}
+            placeholder="Start typing..."
+          />
+          <button onClick={handleSubmit}>Send</button>
+        </div>
       </div>
 
-      {/* Input Field for typing messages */}
-      <div className="chat-input">
-        <input
-          type="text"
-          value={input} // Bind input field to state
-          onChange={updateInput} // Update input state on text change
-          placeholder="Start typing..." // Placeholder text in the input field
-        />
-        <button onClick={handleSubmit}>Send</button>
-      </div>
-
-      {/* Chat response Box */}
-      <div className="chat-box">
-        {Loading? <p>Loading...</p>: <p></p>}
-        {output.length > 0 ? <p>{output}</p>: <p>{error}</p>}
-      </div>
-
-      {/* Footer Section */}
-      <div className="chat-footer"></div> 
+      {/* Footer */}
+      <div className="chat-footer"></div>
     </div>
   );
 };

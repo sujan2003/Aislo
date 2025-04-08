@@ -41,7 +41,7 @@ const Login = () => {
         <h3>Do you have any food allergies?</h3>
         <input type="text" placeholder="e.g., Peanuts, Shellfish, Dairy, None" />
         <h3>What is your preferred grocery store?</h3>
-        <input type="text" placeholder="e.g., Walmart, Target, Whole Foods" /> 
+        <input type="text" placeholder="e.g., Walmart, Amazon, Both" /> 
         <h3>What is your weekly grocery budget range?</h3>
         <input type="text" placeholder="e.g., $50–$75, $100–$150" />
         <button className="signup-btn" onClick={() => navigate("/chat")}>
