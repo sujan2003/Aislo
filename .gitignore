@@ -35,3 +35,4 @@ coverage/
 .vscode/
 
 ChatTest.jsx
+static-chat.jsx
