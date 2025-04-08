@@ -75,6 +75,7 @@ const Chat = () => {
 
       {/* Chat response Box */}
       <div className="chat-box">
+        {Loading? <p>Loading...</p>: <p></p>}
         {output.length > 0 ? <p>{output}</p>: <p>{error}</p>}
       </div>
 
@@ -84,4 +85,4 @@ const Chat = () => {
   );
 };
 
-export default Chat; 
+export default Chat;
