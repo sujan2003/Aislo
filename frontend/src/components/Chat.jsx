@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import "./Chat.css";
 
 const Chat = () => {
@@ -7,24 +8,52 @@ const Chat = () => {
   const [input, setInput] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const messagesEndRef = useRef(null);
+  const [Loading, setLoading] = useState(false);
+  const [loadingMessageId, setLoadingMessageId] = useState(null);
 
   const updateInput = (event) => {
     setInput(event.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-
+  
     const userMessage = { sender: "user", text: input.trim() };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-
-    setTimeout(() => {
-      const botMessage = { sender: "bot", text: "Hi!" };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 500);
+  
+    const loadingMessage = { sender: "bot", text: "Typing...", isLoading: true };
+    const loadingIndex = messages.length + 1;
+  
+    // Show loading message
+    setMessages((prev) => [...prev, loadingMessage]);
+    setLoading(true);
+    setLoadingMessageId(loadingIndex);
+  
+    try {
+      const response = await axios.post("http://localhost:4000/api/data", { input });
+      const botMessage = { sender: "bot", text: response.data.message };
+  
+      // Replace loading message with actual response
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[loadingIndex] = botMessage;
+        return updated;
+      });
+    } catch (error) {
+      const errorMessage = { sender: "bot", text: "Error fetching data from the server" };
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[loadingIndex] = errorMessage;
+        return updated;
+      });
+    } finally {
+      setLoading(false);
+      setLoadingMessageId(null);
+    }
   };
+  
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -60,7 +89,7 @@ const Chat = () => {
               key={index}
               className={`message ${msg.sender === "user" ? "user-msg" : "bot-msg"}`}
             >
-              {msg.text}
+              <p>{msg.text}</p>
             </div>
           ))}
           <div ref={messagesEndRef} />

@@ -7,6 +7,8 @@ import cors from 'cors';
 import { ChatOpenAI, OpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser} from "@langchain/core/output_parsers";
+import { BufferMemory } from "langchain/memory";
+import { ConversationChain } from "langchain/chains";
 const outputParser = new StringOutputParser();
 
 dotenv.config();
@@ -17,13 +19,20 @@ app.use(cors());
 
 //-----------Langchain implementation-----------//
 const chatModel = new ChatOpenAI({
-  model: "gpt-4o-mini",
+  model: "gpt-3.5-turbo",
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+// Memory + Conversation setup
+const memory = new BufferMemory();
+const conversation = new ConversationChain({
+  llm: chatModel,
+  memory: memory,
+});
+
 //Getting the recipe using langchain prompting 
 const prompt = ChatPromptTemplate.fromMessages([
-  ["system", "You are a world class food chef.\n You list the reciepe for {input}(food) and its price in bullet point format. \n You can have nice converstation with the user. \n You have to be very concise and not use a lot of words."],
+  ["system", "You are a world class food chef.\n You list the reciepe for {input}(food) and its price. \n You can have nice converstation with the user. \n You have to be very concise and not use a lot of words. Only use plain text, so no bold, bullet, or any other unsual characters."],
   ["user", "{input}"],
 ]);
 
@@ -90,8 +99,9 @@ async function fetchPriceData(ingredientsList) {
       .flat() // If API returns arrays inside responses, flatten them
 
     // Sort by price (assuming each item has a `price` property)
+    
     const sortedPriceData = priceData.sort((a, b) => a.price - b.price);
-
+    // print(priceData[1])
     // Return the cheapest item
     return sortedPriceData.length > 0 ? sortedPriceData[0] : null;
   } catch (error) {
@@ -108,16 +118,19 @@ app.get('/', (req, res) => {
 //Set up endpoint for communicating with the frontend
 app.post('/api/data', async (req, res) => {
   try {
-    const responseMessage = await getRecipe(req.body.input);
 
+    const formattedPrompt = await prompt.format({ input: req.body.input });
+    const recipeResponse = await conversation.call({ input: formattedPrompt });
+    const responseMessage = await getRecipe(recipeResponse);
+    console.time(responseMessage)
     const testResponseM = await getRecipeInList(responseMessage);
     // console.log(testResponseM);
 
     const ingredientsList = extractIngredients(testResponseM);
     // console.log(ingredientsList);
 
-    const priceData = await fetchPriceData(ingredientsList);
-    console.log(priceData)
+    const priceData = await fetchPriceData(ingredientsList.slice(0, 5));
+    console.log(priceData);
 
 
     res.json({ message: responseMessage });
