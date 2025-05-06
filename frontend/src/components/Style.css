@@ -1,24 +1,39 @@
-.login-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    font-family: 'Barlow', sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+
+.login-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Barlow', sans-serif;
+}
+
 
 /* Login Box */
 
 .login-box {
-    width: 500px;
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    color: #D4E09B; /* Light green text */
-    font-family: "Georgia", serif;
+  width: 90%;
+  max-width: 500px;
+  padding: 40px 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #D4E09B;
+  font-family: "Georgia", serif;
 }
 
 .login-box h2 {
@@ -45,6 +60,7 @@
     color: #333;
     text-align: center;
     margin: 5px 0 10px;
+    max-width: 350px;
 }
 
 .signup-btn {
@@ -58,10 +74,71 @@
     border-radius: 20px; /* Rounded button */
     cursor: pointer;
     font-weight: bold;
+    max-width: 200px;
 }
+
+/* Name Container */
+.name-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; /* Add spacing between the fields */
+  margin-bottom: 20px;
+}
+
+.name-field {
+  flex: 1; /* Make both fields take up equal space */
+}
+
+.name-field input {
+  width: 100%; /* Ensure the input fields fill their container */
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  background: white;
+  color: #333;
+  text-align: center;
+}  
 
 .signup-btn:hover {
     background-color: #b8cf83;
+}
+
+.signup-btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Resend Email Button */
+.resend-btn {
+  width: 45%;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.resend-btn:hover {
+  background-color: #0056b3;
+}
+
+.resend-btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
 
 .login-box a {
@@ -69,7 +146,6 @@
     text-decoration: underline;
     font-size: 16px;
 }
-
 
 .popup-overlay {
     position: fixed;
@@ -113,4 +189,21 @@
   .popup-content button:hover {
     background-color: #822f29;
   }
+
+
+  @media (max-width: 400px) {
+    .login-box h2 {
+      font-size: 22px;
+    }
+  
+    .login-box h3 {
+      font-size: 16px;
+    }
+  
+    .signup-btn {
+      font-size: 16px;
+      padding: 10px;
+    }
+  }
+  
   

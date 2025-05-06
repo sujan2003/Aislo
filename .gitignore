@@ -25,6 +25,7 @@ frontend/dist/
 .firebase/
 firestore.indexes.json
 firestore.rules
+frontend/firebase-config.js
 
 # Cache and other generated files
 *.cache
@@ -34,4 +35,6 @@ coverage/
 # VSCode-specific files
 .vscode/
 
-ChatTest.jsx
+
+firebase-config.js
+serviceAccountKey.json
