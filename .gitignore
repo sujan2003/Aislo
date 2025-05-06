@@ -38,3 +38,4 @@ coverage/
 
 firebase-config.js
 serviceAccountKey.json
+static-chat.jsx
