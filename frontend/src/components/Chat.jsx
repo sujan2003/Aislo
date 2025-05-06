@@ -1,6 +1,9 @@
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import React, { useState } from "react";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
+import axios from "axios";
+import Header from "./Header";
 import "./Chat.css";
 
 const Chat = () => {
@@ -8,34 +11,61 @@ const Chat = () => {
   const [input, setInput] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const messagesEndRef = useRef(null);
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [loadingMessageId, setLoadingMessageId] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // <-- initialize navigate here
 
+  // Check auth state on component mount
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) {
+        navigate("/login");
+      } else {
+        setUser(currentUser);
+      }
+    });
+    return unsubscribe;
+  }, [navigate]);
+
+  // Add the logo link with auth check
+  const renderLogo = () => (
+    <Link 
+      to="/chat" 
+      className="logo"
+      onClick={(e) => {
+        if (!auth.currentUser) {
+          e.preventDefault();
+          navigate('/login');
+        }
+      }}
+    >
+      Aislo
+    </Link>
+  );
+  
   const updateInput = (event) => {
     setInput(event.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const sendMessage = async () => {
     if (!input.trim()) return;
-  
+
     const userMessage = { sender: "user", text: input.trim() };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-  
+
     const loadingMessage = { sender: "bot", text: "Typing...", isLoading: true };
-    const loadingIndex = messages.length + 1;
-  
-    // Show loading message
+    const loadingIndex = messages.length;
+
     setMessages((prev) => [...prev, loadingMessage]);
     setLoading(true);
     setLoadingMessageId(loadingIndex);
-  
+
     try {
       const response = await axios.post("http://localhost:4000/api/data", { input });
       const botMessage = { sender: "bot", text: response.data.message };
-  
-      // Replace loading message with actual response
+
       setMessages((prev) => {
         const updated = [...prev];
         updated[loadingIndex] = botMessage;
@@ -53,45 +83,33 @@ const Chat = () => {
       setLoadingMessageId(null);
     }
   };
-  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage();
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleLogout = () => {
-    auth.signOut();
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
+
+  if (!user) {
+    return <div className="loading-screen">Checking authentication...</div>;
+  }
 
   return (
     <div className="chat-container">
-      {/* Header */}
-      <div className="chat-header">
-        <Link to="/chat" className="logo">Aislo</Link>
+      <Header onLogout={handleLogout} user={user} renderLogo={renderLogo} />
 
-        <div className="profile-dropdown">
-          <span className="material-symbols-outlined" onClick={toggleDropdown}>
-            account_circle
-          </span>
-          {dropdownOpen && (
-            <div className="dropdown-menu">
-              {auth.currentUser ? (
-                <button onClick={handleLogout} className="dropdown-item">
-                  Log Out
-                </button>
-              ) : (
-                <>
-                  <Link to="/signup" className="dropdown-item">Sign Up</Link>
-                  <Link to="/login" className="dropdown-item">Log In</Link>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Chat Wrapper */}
       <div className="chat-wrapper">
         <div className="chat-box scrollable">
           {messages.map((msg, index) => (
@@ -104,32 +122,24 @@ const Chat = () => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-      <div className="chat-box">
-        <p>Grocery Shopping Assistance</p>
-      </div>
 
-        {/* Input Field */}
+        <div className="chat-box">
+          <p>Grocery Shopping Assistance</p>
+        </div>
+
         <div className="chat-input">
           <input
             type="text"
             value={input}
             onChange={updateInput}
+            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Start typing..."
           />
           <button onClick={handleSubmit}>Send</button>
         </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder="Start typing..."
-        />
-      </div>
 
-      {/* Footer */}
-      <div className="chat-footer"></div>
+        <div className="chat-footer"></div>
+      </div>
     </div>
   );
 };
