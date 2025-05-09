@@ -153,7 +153,10 @@ app.post('/signup', async (req, res) => {
       verified: false,
       deleted: false,
     };
+
+    console.log("User creation begun");
     await createUser(newUser);
+    console.log("User Created!");
 
     const emailVerificationLink = await firebaseAdmin.auth().generateEmailVerificationLink(email);
     await sendEmail(email, "Verify Your Email", `<p>Click <a href="${emailVerificationLink}">here</a> to verify.</p>`);

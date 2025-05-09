@@ -122,15 +122,15 @@ app.post('/api/data', async (req, res) => {
     const formattedPrompt = await prompt.format({ input: req.body.input });
     const recipeResponse = await conversation.call({ input: formattedPrompt });
     const responseMessage = await getRecipe(recipeResponse);
-    console.time(responseMessage)
-    const testResponseM = await getRecipeInList(responseMessage);
+    // console.time(responseMessage)
+    // const testResponseM = await getRecipeInList(responseMessage);
     // console.log(testResponseM);
 
-    const ingredientsList = extractIngredients(testResponseM);
+    // const ingredientsList = extractIngredients(testResponseM);
     // console.log(ingredientsList);
 
-    const priceData = await fetchPriceData(ingredientsList.slice(0, 5));
-    console.log(priceData);
+    // const priceData = await fetchPriceData(ingredientsList.slice(0, 5));
+    // console.log(priceData);
 
 
     res.json({ message: responseMessage });

@@ -110,6 +110,7 @@ const Chat = () => {
     <div className="chat-container">
       <Header onLogout={handleLogout} user={user} renderLogo={renderLogo} />
 
+      {/* Chat Wrapper */}
       <div className="chat-wrapper">
         <div className="chat-box scrollable">
           {messages.map((msg, index) => (
@@ -123,23 +124,20 @@ const Chat = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="chat-box">
-          <p>Grocery Shopping Assistance</p>
-        </div>
-
+        {/* Input Field */}
         <div className="chat-input">
           <input
             type="text"
             value={input}
             onChange={updateInput}
-            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Start typing..."
           />
           <button onClick={handleSubmit}>Send</button>
         </div>
-
-        <div className="chat-footer"></div>
       </div>
+
+      {/* Footer */}
+      <div className="chat-footer"></div>
     </div>
   );
 };
